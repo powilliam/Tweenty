@@ -23,6 +23,9 @@ export default StyleSheet.create({
     maxWidth: 230,
     marginLeft: 15,
   },
+  modalContainer: {
+    flex: 1,
+  },
   taskTitle: {
     fontFamily: "Poppins",
     fontSize: 16,
@@ -38,13 +41,13 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  subtasksCountContainer: {
+  buttonsContainer: {
+    paddingHorizontal: 25,
+    marginBottom: 25,
+    width: "100%",
+    marginTop: 25,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  subtasksCount: {
-    marginRight: 3,
-    color: "#FFF",
   },
 });

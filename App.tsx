@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { createConnection } from "typeorm/browser";
 import { AppLoading } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
+import { Host } from "react-native-portalize";
 import { enableScreens } from "react-native-screens";
 import * as Font from "expo-font";
 import store from "./src/redux/store";
@@ -45,9 +46,10 @@ export default function App() {
 
   return (
     <ReduxProvider store={store}>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.card} />
       <NavigationContainer theme={theme}>
-        <Routes />
+        <Host>
+          <Routes />
+        </Host>
       </NavigationContainer>
     </ReduxProvider>
   );

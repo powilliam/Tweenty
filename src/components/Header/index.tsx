@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Text } from "react-native";
+import { useSafeArea } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
 import { Appbar } from "react-native-paper";
 
@@ -10,13 +11,19 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({ title }) => {
+  const EdgeInsets = useSafeArea();
   const theme = useTheme();
 
   const backgroundColor = useMemo(() => theme.colors.card, [theme]);
   const textColor = useMemo(() => theme.colors.text, [theme]);
 
   return (
-    <Appbar style={[styles.container, { backgroundColor }]}>
+    <Appbar
+      style={[
+        styles.container,
+        { backgroundColor, padding: EdgeInsets.top + 10 },
+      ]}
+    >
       <Text style={[styles.title, { color: textColor }]}>{title}</Text>
     </Appbar>
   );

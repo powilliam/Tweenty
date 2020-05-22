@@ -10,7 +10,6 @@ import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Home from "../screens/Home";
 import Archive from "../screens/Archive";
 import CreateTask from "../screens/CreateTask";
-import Task from "../screens/Task";
 
 const Stack = createStackNavigator();
 const Bottom = createMaterialBottomTabNavigator();
@@ -68,7 +67,6 @@ export default function Routes() {
         component={CreateTask}
         options={{ title: "" }}
       />
-      <Stack.Screen name="Task" component={Task} options={{ title: "" }} />
     </Stack.Navigator>
   );
 }
