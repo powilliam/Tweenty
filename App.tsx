@@ -1,20 +1,21 @@
 import "reflect-metadata";
 import React, { useState, useCallback } from "react";
-import { StatusBar } from "react-native";
 import { Provider as ReduxProvider } from "react-redux";
 import { createConnection } from "typeorm/browser";
 import { AppLoading } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider } from "styled-components";
 import { Host } from "react-native-portalize";
 import { enableScreens } from "react-native-screens";
 import * as Font from "expo-font";
+
 import store from "./src/redux/store";
 
 import { databaseConfig } from "./src/config/database";
 
 import Routes from "./src/routes";
 
-import theme from "./src/themes/global";
+import { global as theme } from "./src/themes/global";
 
 enableScreens();
 export default function App() {
@@ -30,9 +31,7 @@ export default function App() {
       });
 
       await createConnection(databaseConfig);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (_) {}
   }, []);
 
   if (isLoading) {
@@ -46,10 +45,12 @@ export default function App() {
 
   return (
     <ReduxProvider store={store}>
-      <NavigationContainer theme={theme}>
-        <Host>
-          <Routes />
-        </Host>
+      <NavigationContainer>
+        <ThemeProvider theme={theme}>
+          <Host>
+            <Routes />
+          </Host>
+        </ThemeProvider>
       </NavigationContainer>
     </ReduxProvider>
   );

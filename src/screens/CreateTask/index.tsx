@@ -1,32 +1,32 @@
-import React, { useState, useMemo, useCallback } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState, useMemo, useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { ThemeContext } from "styled-components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import styles from "./styles";
+import Button from "../../components/Button";
+
+import { Container, Form, FormHeader, FormHeaderTitle, Input } from "./styles";
 
 const CreateTask: React.FC = () => {
+  const theme = useContext(ThemeContext);
+
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
 
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-
-  const buttonColor = useMemo(() => {
+  const buttonBackgroundColor = useMemo(() => {
     if (!taskTitle) {
-      return "#f9f9f9";
+      return "transparent";
     }
-
-    return "#5AA9E6";
   }, [taskTitle]);
   const buttonTextColor = useMemo(() => {
     if (!taskTitle) {
-      return "#666";
+      return "#c1c1c1";
     }
-
-    return "#FFF";
   }, [taskTitle]);
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handleCreateTask = useCallback(() => {
     if (taskTitle) {
@@ -43,41 +43,35 @@ const CreateTask: React.FC = () => {
   }, [navigation, dispatch, taskTitle, taskDescription]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <View style={styles.formHeaderContainer}>
+    <Container>
+      <Form>
+        <FormHeader>
           <MaterialCommunityIcons
             name="calendar-check"
-            color="#F87A85"
+            color={theme.systemColor}
             size={30}
           />
-          <Text style={styles.formHeaderTitle}>Task</Text>
-        </View>
-        <TextInput
-          style={styles.formTextInput}
+          <FormHeaderTitle>Informations</FormHeaderTitle>
+        </FormHeader>
+        <Input
           placeholder="Write an awesome title"
-          placeholderTextColor="#999"
           value={taskTitle}
           onChangeText={setTaskTitle}
         />
-        <TextInput
-          style={styles.formTextInput}
+        <Input
           placeholder="You can add a description too"
-          placeholderTextColor="#999"
           value={taskDescription}
           onChangeText={setTaskDescription}
         />
-      </View>
+      </Form>
 
-      <TouchableOpacity
-        style={[styles.createTaskButton, { backgroundColor: buttonColor }]}
+      <Button
+        label="Create this task"
         onPress={handleCreateTask}
-      >
-        <Text style={[styles.createTaskButtonText, { color: buttonTextColor }]}>
-          Create this task
-        </Text>
-      </TouchableOpacity>
-    </View>
+        backgroundColor={buttonBackgroundColor}
+        textColor={buttonTextColor}
+      />
+    </Container>
   );
 };
 

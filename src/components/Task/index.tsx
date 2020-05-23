@@ -1,20 +1,28 @@
 import React, { useMemo, useCallback, useRef } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
-import { Portal } from "react-native-portalize";
 import { Modalize } from "react-native-modalize";
-import { Button } from "react-native-paper";
+import { Portal } from "react-native-portalize";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Task } from "../../models/Task";
 
-import styles from "./styles";
+import Button from "../Button";
+
+import {
+  Container,
+  Leading,
+  LeadingColor,
+  Informations,
+  Title,
+  Description,
+  ModalFooter,
+} from "./styles";
 
 interface Props {
   data: Task;
 }
 
-const TaskComponent: React.FC<Props> = ({ data }) => {
+const TaskComponent: React.FC<Props> = ({ data, direction }) => {
   const modalizeRef = useRef<Modalize>(null);
 
   const dispatch = useDispatch();
@@ -23,11 +31,18 @@ const TaskComponent: React.FC<Props> = ({ data }) => {
   const title = useMemo(() => data.title, [data]);
   const description = useMemo(() => data.description, [data]);
   const isArchived = useMemo(() => data.isArchived, [data]);
+  const archiveLabel = useMemo(() => {
+    if (isArchived) {
+      return "Unarchive this task";
+    }
+
+    return "Archive this task";
+  }, [isArchived]);
   const taskColor = useMemo(() => {
     if (isArchived) {
       return "#999999";
     }
-    return "#FEFFC2";
+    return "#253237";
   }, [isArchived]);
   const taskIcon = useMemo(() => {
     if (isArchived) {
@@ -41,72 +56,63 @@ const TaskComponent: React.FC<Props> = ({ data }) => {
   }, [modalizeRef]);
 
   const handleToggleArchive = useCallback(() => {
-    modalizeRef.current?.close();
     dispatch({
       type: "REQUEST_TOGGLE_ARCHIVE_TASK",
       payload: { id, isArchived },
     });
+    modalizeRef.current?.close();
   }, [dispatch, id, isArchived, modalizeRef]);
 
   const handleCompleteTask = useCallback(() => {
-    modalizeRef.current?.close();
     dispatch({ type: "REQUEST_COMPLETE_TASK", payload: { id } });
+    modalizeRef.current?.close();
   }, [dispatch, id, modalizeRef]);
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.taskContainer}
-        onPress={handleOpenModalize}
-      >
-        <View style={styles.colorAndinformationContainer}>
-          <View style={[styles.colorContainer, { backgroundColor: taskColor }]}>
-            <MaterialCommunityIcons name={taskIcon} color="#000" size={24} />
-          </View>
-          <View style={styles.informationContainer}>
-            <Text style={styles.taskTitle}>{title}</Text>
-            {description ? (
-              <Text style={styles.taskDescription}>{description}</Text>
-            ) : null}
-          </View>
-        </View>
-      </TouchableOpacity>
+      <Container activeOpacity={0.7} onPress={handleOpenModalize}>
+        <Leading>
+          <LeadingColor backgroundColor={taskColor}>
+            <MaterialCommunityIcons name={taskIcon} color="#FFF" size={24} />
+          </LeadingColor>
+          <Informations>
+            <Title>{title}</Title>
+            {description ? <Description>{description}</Description> : null}
+          </Informations>
+        </Leading>
+      </Container>
       <Portal>
         <Modalize
           ref={modalizeRef}
-          modalStyle={styles.modalContainer}
+          modalHeight={650}
           scrollViewProps={{
             contentContainerStyle: {
-              marginTop: 25,
-              paddingHorizontal: 45,
-              paddingBottom: 50,
+              alignItems: "center",
+              paddingVertical: 30,
+              paddingHorizontal: 25,
             },
           }}
           FooterComponent={() => (
-            <View style={styles.buttonsContainer}>
+            <ModalFooter>
               <Button
-                icon="archive"
-                mode="outlined"
-                color="#666"
+                label={archiveLabel}
+                backgroundColor="#FFF"
+                textColor="#F56476"
                 onPress={handleToggleArchive}
-              >
-                <Text>{isArchived ? "unarchive" : "archive"}</Text>
-              </Button>
-              <Button
-                icon="check"
-                mode="contained"
-                color="#5AA9E6"
-                onPress={handleCompleteTask}
-              >
-                <Text>COMPLETE</Text>
-              </Button>
-            </View>
+              />
+              <Button label="Complete this task" onPress={handleCompleteTask} />
+            </ModalFooter>
           )}
         >
-          <Text style={styles.taskTitle}>{title}</Text>
-          {description ? (
-            <Text style={styles.taskDescription}>{description}</Text>
-          ) : null}
+          <LeadingColor
+            backgroundColor={taskColor}
+            marginBottom="25px"
+            dimensions="80px"
+          >
+            <MaterialCommunityIcons name={taskIcon} color="#FFF" size={26} />
+          </LeadingColor>
+          <Title>{title}</Title>
+          {description ? <Description>{description}</Description> : null}
         </Modalize>
       </Portal>
     </>

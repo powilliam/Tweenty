@@ -16,7 +16,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.powilliam.tweenty",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.powilliam.tweenty",
+      "versionCode": 1
     }
   }
 }

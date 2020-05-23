@@ -1,18 +1,23 @@
-import React, { useCallback } from "react";
-import { FlatList, View, ListRenderItem } from "react-native";
+import React, { useCallback, useMemo } from "react";
+import { FlatList, Text, ListRenderItem } from "react-native";
 import { useSelector } from "react-redux";
 
 import { Task } from "../../models/Task";
 
 import { Reducer } from "../../redux/store";
 
-import Header from "../../components/Header";
 import TaskComponent from "../../components/Task";
 
-import styles from "./styles";
+import styles, { Container, EmptyText } from "./styles";
 
 const Archive: React.FC = () => {
   const tasks = useSelector<Reducer, Task[]>((state) => state.tasks.archived);
+
+  const isEmpty = useMemo(() => {
+    if (tasks.length == 0) return true;
+
+    return false;
+  }, [tasks]);
 
   const renderItem = useCallback<ListRenderItem<Task>>(
     ({ item }) => <TaskComponent data={item} />,
@@ -20,15 +25,18 @@ const Archive: React.FC = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Header title="Archived tasks" />
-      <FlatList
-        contentContainerStyle={styles.taskListContainer}
-        data={tasks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+    <Container>
+      {isEmpty ? (
+        <EmptyText>Tasks you archive will appear here</EmptyText>
+      ) : (
+        <FlatList
+          contentContainerStyle={styles.taskListContainer}
+          data={tasks}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
+    </Container>
   );
 };
 

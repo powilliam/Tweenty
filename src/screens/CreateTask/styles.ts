@@ -1,48 +1,37 @@
-import { StyleSheet } from "react-native";
+import styled from "styled-components/native";
 
-export default StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 25,
-    alignItems: "center",
-    backgroundColor: "#FFF",
-  },
-  formContainer: {
-    width: "100%",
-    marginTop: 50,
-  },
-  formHeaderContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 25,
-  },
-  formHeaderTitle: {
-    color: "#333",
-    marginLeft: 10,
-    fontSize: 18,
-    fontFamily: "Poppins-Light",
-  },
-  formTextInput: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 4,
-    marginBottom: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    fontFamily: "Poppins",
-    color: "#666",
-    fontSize: 13,
-  },
-  createTaskButton: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 4,
-    height: 50,
-    paddingHorizontal: 25,
-    marginTop: 35,
-  },
-  createTaskButtonText: {
-    fontFamily: "Poppins",
-    fontSize: 16,
-  },
-});
+export const Container = styled.KeyboardAvoidingView`
+  flex: 1;
+  padding: 50px 25px;
+  align-items: center;
+  background-color: ${(props) => props.theme.backgroundColor};
+`;
+
+export const Form = styled.View`
+  width: 100%;
+  margin-bottom: 50px;
+`;
+
+export const FormHeader = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 25px;
+`;
+
+export const FormHeaderTitle = styled.Text`
+  margin-left: 10px;
+  font-size: 18px;
+  font-family: Poppins-Light;
+  color: ${(props) => props.theme.textColor};
+`;
+
+export const Input = styled.TextInput`
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  margin-bottom: 10px
+  padding: 0px 25px;
+  height: 50px;
+  font-family: Poppins
+  color: ${(props) => props.theme.subtextColor};
+  font-size: 13px
+`;
